@@ -1,0 +1,11 @@
+name: Print Log
+
+on: [push]
+
+jobs:
+  print_log:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Print no Log
+      run: echo "Workflow executado com sucesso!"
