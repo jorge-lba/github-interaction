@@ -7,5 +7,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Print no Log
-      run: echo "Workflow executado com sucesso!"
+      - name: Print no Log
+        run: echo "Workflow executado com sucesso!"
+
+      - name: Ação que sempre falha
+        run: exit 1
