@@ -92,6 +92,13 @@ router
         avatar_url,
       }
     }));
+
+    if(conclusion === "success") {
+      const dev = await db.findDevByNickname(login);
+      dev.somePoints(10);
+      await db.saveDev(dev);
+    }
+
     ctx.response.status = 200;
   });
 
