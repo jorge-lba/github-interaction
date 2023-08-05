@@ -77,13 +77,20 @@ router
       name,
       status,
       conclusion,
-
-    } = await ctx.request.body().value;
+      actor: {
+        login,
+        avatar_url,
+      }
+    } = (await ctx.request.body().value).workflow_run;
 
     console.log(JSON.stringify({
       name,
       status,
       conclusion,
+      actor: {
+        login,
+        avatar_url,
+      }
     }));
     ctx.response.status = 200;
   });
