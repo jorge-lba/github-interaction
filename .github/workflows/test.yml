@@ -1,6 +1,6 @@
 name: Print Log
 
-on: [push]
+on: [pull_request]
 
 jobs:
   print_log:
