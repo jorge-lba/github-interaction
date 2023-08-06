@@ -55,6 +55,15 @@ router
     const { nickname } = ctx.params;
     const dev = await db.findDevByNickname(nickname);
 
+    if (!dev) {
+      ctx.response.body = JSON.stringify({
+        error: "Dev not found",
+      });
+      ctx.response.headers.set("Content-Type", "application/json");
+      ctx.response.status = 404;
+      return;
+    }
+
     ctx.response.body = JSON.stringify(dev.props);
     ctx.response.headers.set("Content-Type", "application/json");
     ctx.response.status = 200;
@@ -64,6 +73,16 @@ router
     const { points } = await ctx.request.body().value;
 
     const dev = await db.findDevByNickname(nickname);
+
+    if (!dev) {
+      ctx.response.body = JSON.stringify({
+        error: "Dev not found",
+      });
+      ctx.response.headers.set("Content-Type", "application/json");
+      ctx.response.status = 404;
+      return;
+    }
+
     dev.somePoints(points);
 
     await db.saveDev(dev);
@@ -93,9 +112,24 @@ router
       }
     }));
 
-    if(conclusion === "success") {
-      const dev = await db.findDevByNickname(login);
-      dev.somePoints(10);
+    if(conclusion === "success" || conclusion === "failure") {
+      let dev = await db.findDevByNickname(login);
+      
+      if(!dev) {
+        dev = Dev.build({
+          name: login,
+          nickname: login,
+          avatarUrl: avatar_url,
+          points: 0,
+        });
+      }
+
+      if(conclusion === "success") {
+        dev.somePoints(1);
+      }else if(conclusion === "failure") {
+        dev.somePoints(-10);
+      }
+
       await db.saveDev(dev);
     }
 
